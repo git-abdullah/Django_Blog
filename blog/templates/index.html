@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+<head>
+  <!-- required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Blog</title>
+
+  <!-- Bootstrap CSS local file -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+</head>
+<body>
+
+  <!-- optional JavaScript - comes at BOTTOM of page -->
+  <!-- jQuery FIRST, then Bootstrap JS -->
+  <!-- bootstrap.bundle.min.js includes popper.js -->
+  <!-- The ORDER is VERY important! -->
+  <script src="{% static 'js/jquery.slim.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- DO NOT forget your closing tags! -->
+</body>
+</html>
