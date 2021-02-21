@@ -3,10 +3,9 @@
 
 {% block content%}
 <div class="col-md-8 offset-md-2">
-    <h3>{{category | title}} </h3>
-    <hr>
-    {% for post in page_obj %}
-
+    <h5>Seach results for "<small>{{ search_query | title }}</small>"</h5>
+    
+    {% for post in results %}
     <h3><a href="{% url 'full_post' post.pk %}">{{ post.title }}</a></h3>
     <small>
         {{post.created_on.date}} |&nbsp;
@@ -19,6 +18,7 @@
     <p>{{post.body | slice:":400"}}...</p>
     <hr>
     {% endfor %}
+
      <!--Pagination-->
      <ul class="pagination">
             {% if page_obj.has_previous %}
@@ -33,5 +33,5 @@
             <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
             {% endif %}
     </ul>
-</div> 
+</div>
 {% endblock %}

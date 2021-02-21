@@ -1,13 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
 from blog.models import Post, Comments
 from .forms import CommentForm
+from django.core.paginator import Paginator
 
 
 # Create your views here.
 def index(request):
     posts = Post.objects.all().order_by('-created_on')
+    paginator = Paginator(posts, 2)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        "posts": posts
+        "page_obj": page_obj
     }
     return render(request, 'blog.html', context)
 
@@ -24,7 +28,9 @@ def full_post(request, pk):
                 post = post
             )
             comment.save()
+            return HttpResponseRedirect(f'/{pk}')
     comments = Comments.objects.filter(post=post)
+
 
     context = {
         "post": post,
@@ -35,8 +41,21 @@ def full_post(request, pk):
 
 def category(request, category):
     posts = Post.objects.filter(categories__name__contains=category).order_by('-created_on')
+    paginator = Paginator(posts, 2)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        "posts": posts,
+        "page_obj": page_obj,
         "category": category
     }
     return render(request, 'category.html', context)
+
+def Search(request):
+    if request.method == 'GET':
+        search_query = request.GET['search_query']
+        results = Post.objects.filter(title__icontains=search_query)
+        context = {
+            'results': results,
+            'search_query': search_query
+        }
+        return render(request, 'search.html', context)

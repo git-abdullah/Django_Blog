@@ -14,7 +14,23 @@
         {% endfor %}
     </small>
     <p>{{ post.body | linebreaks }}</p>
-    <h4>Leave a Comment: </h4>
+
+    <!--Comments-->
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        Leave a Comment!
+       </button>
+    <!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+    <div class="modal-content">
+    <!-- Modal Header -->
+    <div class="modal-header">
+    <h4 class="modal-title">Enter a Comment: </h4>
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+    <!-- Modal body -->
+    <div class="modal-body">
     <form action="/{{ post.pk }}/" method="POST">
         {% csrf_token %}
         <div class="form-group">
@@ -25,9 +41,19 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    </div>
+    <!-- Modal footer -->
+    <div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+    </div>
+    </div>
+    </div>
+   </div>
+    
     <h4>Comments: </h4>
+    <hr>
     <p>{% for comment in comments %}
-    On {{comment.created_on.date}} {{comment.author}} wrote: </p>
+      {{comment.author}} <small>{{comment.created_on.date}}</small> </p>
     <p>{{comment.body}}</p>
     <hr>
     {% endfor %}

@@ -3,9 +3,8 @@
 
 {% block content%}
 <div class="col-md-8 offset-md-2">
-    <h3>Blog Posts: </h3>
-    <hr>
-    {% for post in posts %}
+    
+    {% for post in page_obj %}
     <h3><a href="{% url 'full_post' post.pk %}">{{ post.title }}</a></h3>
     <small>
         {{post.created_on.date}} |&nbsp;
@@ -18,5 +17,21 @@
     <p>{{post.body | slice:":400"}}...</p>
     <hr>
     {% endfor %}
+
+    <!--Pagination-->
+    <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item"> <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+            {% endif %}
+            
+           
+           
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li> 
+            <li class="page-item"> <a class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+            {% endif %}
+    </ul>
 </div>
+
 {% endblock %}
