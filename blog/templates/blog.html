@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+<div class="col-md-8 offset-md-2">
+    <h3>Blog Posts: </h3>
+    <hr>
+    {% for post in posts %}
+    <h3><a href="{% url 'full_post' post.pk %}">{{ post.title }}</a></h3>
+    <small>
+        {{post.created_on.date}} |&nbsp;
+        Catorgies: |&nbsp;
+        {% for category in post.categories.all %}
+        <a href="{% url 'category' category.name %}">{{category.name}}
+        </a>|&nbsp;
+        {% endfor %}
+    </small>
+    <p>{{post.body | slice:":400"}}...</p>
+    <hr>
+    {% endfor %}
+</div>
+{% endblock %}

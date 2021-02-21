@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="col-md-8 offset-md-2">
+    <h2>{{post.title}}</h2>
+    <small>
+        {{post.created_on.date}} |&nbsp;
+        Catorgies: |&nbsp;
+        {% for category in post.categories.all %}
+        <a href="{% url 'category' category.name %}">{{category.name}}
+        </a>|&nbsp;
+        {% endfor %}
+    </small>
+    <p>{{ post.body | linebreaks }}</p>
+    <h4>Leave a Comment: </h4>
+    <form action="/{{ post.pk }}/" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            {{form.author}}
+        </div>
+        <div class="form-group">
+            {{form.body}}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <h4>Comments: </h4>
+    <p>{% for comment in comments %}
+    On {{comment.created_on.date}} {{comment.author}} wrote: </p>
+    <p>{{comment.body}}</p>
+    <hr>
+    {% endfor %}
+</div>
+{% endblock %}
