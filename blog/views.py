@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect
-from blog.models import Post, Comments
-from .forms import CommentForm
+from blog.models import Post, Comments,Reply
+from .forms import CommentForm, ReplyForm
 from django.core.paginator import Paginator
 
 
@@ -59,3 +59,26 @@ def Search(request):
             'search_query': search_query
         }
         return render(request, 'search.html', context)
+
+def Replies(request, pk):
+    comment = Comments.objects.get(pk=pk)
+   
+    form = ReplyForm()
+    if request.method == 'POST':
+        form = ReplyForm(request.POST)
+        if form.is_valid():
+            reply = Reply(
+                author = form.cleaned_data['author'],
+                body = form.cleaned_data['body'],
+                Comment = comment
+            )
+            reply.save()
+            return HttpResponseRedirect(f'Reply/{pk}/')
+    replies = Reply.objects.filter(Comment=comment)
+
+    context = {
+        'form': form,
+        'comment': comment,
+        'replies': replies
+    }
+    return render(request, 'reply.html', context)

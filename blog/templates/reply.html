@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+<div class="col-md-8 offset-md-2">
+        <div class="media border p-3">
+                <img src="{% static 'img/avatar.png' %}" alt="{{comment.author}}" class="mr-3 mt-3 rounded-circle" style="width:60px;">
+                <div class="media-body">
+                    <h5>{{comment.author}} <small><i>Commented on {{comment.created_on.date}}</i></small></h5>
+                    <p>{{comment.body}}</p>
+                    {% for reply in replies %}
+                    <div class="media p-3">
+                        <img src="{% static 'img/avatar.png' %}" alt="{{comment.author}}" class="mr-3 mt-3 rounded-circle" style="width:60px;">
+                        <div class="media-body">
+                            <h6>{{reply.author}} <small><i>Replied on {{reply.created_on.date}}</i></small></h6>
+                            <p>{{reply.body}}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="button" class="btn btn-primary">
+                        <a href="{% url 'Reply' comment.pk %}" data-toggle="modal" data-target="#myModal" style="color:white;">Reply</a>
+                </button>
+        </div>
+    
+       
+         <!-- The Modal -->
+<div class="modal" id="myModal">
+        <div class="modal-dialog">
+        <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+        <h4 class="modal-title">Reply: </h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+        <form action="{% url 'Reply' comment.pk %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                {{form.author}}
+            </div>
+            <div class="form-group">
+                {{form.body}}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+        </div>
+        </div>
+</div>
+{% endblock %}

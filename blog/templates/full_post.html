@@ -52,10 +52,19 @@
     
     <h4>Comments: </h4>
     <hr>
-    <p>{% for comment in comments %}
-      {{comment.author}} <small>{{comment.created_on.date}}</small> </p>
-    <p>{{comment.body}}</p>
-    <hr>
-    {% endfor %}
+    {% for comment in comments %}
+    <div class="media border p-3 mt-3">
+        <img src="{% static 'img/avatar.png' %}" alt="{{comment.author}}" class="mr-3 mt-3 rounded-circle" style="width:60px;">
+        <div class="media-body">
+            <h5>{{comment.author}} <small><i>Commented on {{comment.created_on.date}}</i></small></h5>
+            <p>{{comment.body}}</p>
+        </div>
+        <button type="button" class="btn btn-primary">
+            <a href="{% url 'Reply' comment.pk %}" style="color:white;">Reply</a>
+        </button>
+    </div> 
+{% endfor %}
+    
+    
 </div>
 {% endblock %}
