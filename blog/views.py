@@ -13,7 +13,7 @@ def index(request):
     context = {
         "page_obj": page_obj
     }
-    return render(request, 'blog.html', context)
+    return render(request, 'blog/blog.html', context)
 
 def full_post(request, pk):
     post = Post.objects.get(pk=pk)
@@ -37,7 +37,7 @@ def full_post(request, pk):
         "comments": comments,
         "form": form,
     }
-    return render(request, 'full_post.html', context)
+    return render(request, 'blog/full_post.html', context)
 
 def category(request, category):
     posts = Post.objects.filter(categories__name__contains=category).order_by('-created_on')
@@ -48,7 +48,7 @@ def category(request, category):
         "page_obj": page_obj,
         "category": category
     }
-    return render(request, 'category.html', context)
+    return render(request, 'blog/category.html', context)
 
 def Search(request):
     if request.method == 'GET':
@@ -58,7 +58,7 @@ def Search(request):
             'results': results,
             'search_query': search_query
         }
-        return render(request, 'search.html', context)
+        return render(request, 'blog/search.html', context)
 
 def Replies(request, pk):
     comment = Comments.objects.get(pk=pk)
@@ -81,4 +81,4 @@ def Replies(request, pk):
         'comment': comment,
         'replies': replies
     }
-    return render(request, 'reply.html', context)
+    return render(request, 'blog/reply.html', context)
